@@ -11,7 +11,7 @@ Project 2
 
 ## Introduction
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/harder_challenge_output.gif)
 
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
 
