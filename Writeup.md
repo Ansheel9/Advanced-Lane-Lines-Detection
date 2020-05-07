@@ -1,8 +1,3 @@
----
-title: 'Writeup'
-disqus: Ansheel Banthia
----
-
 Project 1 - Advanced Lane Finding :car: 
 ===
 
@@ -25,7 +20,7 @@ Udacity Self-Driving Car Engineer Nanodegree
 <a name="sum"></a>
 ## Summary
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/harder_challenge_output.gif)
 
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
 
@@ -52,8 +47,6 @@ My pipeline consisted of 7 major steps. First, I performed camera callibration. 
 
 OpenCV functions <code> findChessboardCorners() </code> and <code> drawChessboardCorners() </code> were used to automatically find and draw corners in an image of a chessboard pattern. "Object points", which will be the (x, y, z) coordinates of the chessboard corners in the real world were prepared assuming the chessboard pattern is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image. Thus, <code> objp </code> is just a replicated array of coordinates, and <code> objpoints </code> is appended with a copy of it every time <code> findChessboardCorners() </code> successfully detect all chessboard corners in a test image. <code> imgpoints </code> is appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard pattern detection. It is expected to detect 9x6 grid of corners on the calibrated images.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
-
 <a name="dis"></a>
 ### Distortion Correction
 
@@ -61,14 +54,14 @@ To measure distortion of a camera it is possible to use photos of real world obj
 
 The output `objpoints` and `imgpoints` were used to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function. It returns the camera matrix (`mtx`), distortion coefficients (`dist`), rotation and translation vectors, etc. For the code, see the second code cell of the project Jupyter notebook. A function `undistort(img)` was also defined. This functions correct distortion of a given image using the `cv2.undistort()` function and previously computed camera matrix and distortion coefficients.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/examples/undistort_output.png)
 
 <a name="bin"></a>
 ### Binary Threshold
 
 In this section, a binary image is created. I used a combination of color and gradient thresholds to generate a binary image. The implementation extracts the HLS colorspace, where especially the S channel seems to highlight the lane lines quite well. A Sobel filter was applied followed by a custom thresholding to select relevant pixels. This was followed by a thresholding of the S channel of HLS. Also, directional & magnitude gradent thresholding was performend to highlight the lane lines. Finally, all binary output were combined to produce the final output.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/examples/binary_combo_example.jpg)
 
 <a name="per"></a>
 ### Perspective Transformation
@@ -87,7 +80,7 @@ A perspective transform maps the points in a given image to different, desired, 
 These source and destination points are used in the function
 `getPerspectiveTransform()`to obtain the transformation matrix, M. M is then applied to the function `warpPerspective()` to warp the image to a top-down view and the destination points are then drawn on to the image. 
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/examples/color_fit_lines.jpg)
 
 <a name="lan"></a>
 ### Lane Detection
@@ -98,13 +91,11 @@ Two different methods were used to detect the lane lines: sliding window search 
 
 First, a histogram of where the binary activations occur across the image is computed and split into two sides, one for each line. The two highest peaks from the histogram provides a starting point for determining where the lane lines are.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
-
 A sliding window is then used to move upward in the image (further along the road) to determine where the lane lines go. A second-order polynomial is also fitted to the lanes detected from the histogram as seen below. The number of sliding windows are represented by the green rectangles and the size of each window is defined by the parameter “margin”.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
-
 The second method used was a “search from prior”. Instead of starting fresh on every frame and doing a blind search again this method will search a margin around the previous lane line position. Once the lane lines are identified in the first frame, a highly targeted search is then performed for the next frame.
+
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/examples/warped_straight_lines.jpg)
 
 <a name="rad"></a>
 ### Radius of Curvature & Car Position Estimation
@@ -118,14 +109,14 @@ The function `measure_curvature_real()` takes in the pixel values for the left a
 
 The function `measure_offset_to_center()` calculates the offset to the center of the lane by taking the two fitted polynomials for each lane line and finding the x-coordinate where they intersect with the bottom of the image frame, i.e. at y_max. The center is then calculated by finding the center point between this two x-coordinates. Finally, the value is transformed from pixel-values to real-world values in meters, and then returned.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/examples/color_fit_lines.jpg)
 
 <a name="res"></a>
 ### Result
 
 The final step in processing the images was to plot the polynomials on to the warped image, fill the space between the polynomials to highlight the lane that the car is in, use another perspective trasformation to unwarp the image from birds eye back to its original perspective, and print the distance from center and radius of curvature on to the final annotated image.
 
-![](https://github.com/Ansheel9/P3-Collabration-Competition-DeepRL/blob/master/Images/plot.PNG)
+![](https://github.com/Ansheel9/Advanced-Lane-Lines-Detection/blob/master/examples/example_output.jpg)
 
 <a name="short"></a>
 ## Potential Shortcomings with Current Pipeline
