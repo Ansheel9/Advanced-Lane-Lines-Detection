@@ -47,4 +47,4 @@ A browser window will appear showing the contents of the current directory.  Cli
 
 ## Instruction
 
-To train the agent, start jupyter notebook, open <code> Advanced_Lane_Finding.ipynb </code> and execute! For more information, please check instructions inside the notebook.
+To train the agent, start jupyter notebook, open <code> Advanced_Lane_Detection.ipynb </code> and execute! For more information, please check instructions inside the notebook.
